@@ -1,0 +1,39 @@
+version: '3.5'
+services:
+  rabbitmq:
+    container_name: rabbitmq
+    hostname: rabbit
+    image: rabbitmq:latest
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=*secret00*
+    ports:
+      - "5672:5672" 
+  sql:
+    image: "${SQL_IMAGE}"
+    container_name: "${SQL_HOST}"
+    environment:
+      PGDATA: "${SQL_DATA_INSIDE}/pgdata"
+    expose:
+      - "${SQL_PORT}"
+    volumes:
+      - "${SQL_DATA_OUTSIDE}:${SQL_DATA_INSIDE}"
+  app:
+    image: "${APP_IMAGE}"
+    command: sh -c "pip install -r requirements.txt && python manage.py runserver 0:8000"
+    container_name: "${APP_CONTAINER}"
+    env_file:
+      - .env
+    environment:
+      VIRTUAL_HOST: "${APP_CONTAINER}"
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    volumes:
+      - "${APP_VOLUME}"
+    working_dir: "${APP_WORKING_DIR}"
+    depends_on:
+      - sql
+      - rabbitmq
+networks:
+  default:
+    name: "${NETWORK}"
