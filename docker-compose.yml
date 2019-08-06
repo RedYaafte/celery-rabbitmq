@@ -2,13 +2,15 @@ version: '3.5'
 services:
   rabbitmq:
     container_name: rabbitmq
-    hostname: rabbit
+    hostname: rabbitmq
     image: rabbitmq:latest
     environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=*secret00*
+      - "${RABBITMQ_DEFAULT_USER}"
+      - "${RABBITMQ_DEFAULT_PASS}"
     ports:
-      - "5672:5672" 
+      - "15672:15672"
+      - "5672:5672"
+    restart: on-failure
   sql:
     image: "${SQL_IMAGE}"
     container_name: "${SQL_HOST}"
