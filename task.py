@@ -11,7 +11,8 @@ from django.conf import settings
 app = Celery('tasks', broker='pyamqp://admin:mypass@rabbitmq:5672')
 
 now = datetime.datetime.now()
-register = sqlite3.connect(f'Command-{now}.db')
+register = sqlite3.connect(
+    f'command-{now.year}-{now.month}-{now.day}-{now.hour}-{now.hour}-{now.minute}.db')
 register.execute(
     '''CREATE TABLE IF NOT EXISTS register (repeat INT, command VARCHAR(32) unique)''')
 
@@ -23,16 +24,17 @@ def register_command(command):
     with register:
         result = register.execute(
             f"SELECT repeat FROM register WHERE command = \"{command}\"").fetchall()
-        print("result", result)
+        print("result -->", result)
         if result:
-            total = result[0][0]
-    print(f"Commands {command} - {total}")
+            count = result[0][0]
+
+    print(f"Commands {command} → {count}")
 
     for i in range(0, 30):
         try:
             with register:
                 register.execute(
-                    f"INSERT OR REPLACE INTO register (repeat, command) VALUES( {total + 1},\"{command}\" );")
+                    f"INSERT OR REPLACE INTO register (repeat, command) VALUES( {count + 1},\"{command}\" );")
         except:
             time.sleep(1)
             pass
