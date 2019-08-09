@@ -1,17 +1,17 @@
 from __future__ import absolute_import, unicode_literals
 from celery import Celery, shared_task
 
-from tasks.proj import app
-
-from .models import Message
+from tasks.celery import app
 
 
-@app.task
+# @app.task
+@shared_task
 def summ(x, y):
     return x + y
 
 
-@app.task
+# @app.task
+@shared_task
 def multiplicate(x, y):
     return x * y
 
