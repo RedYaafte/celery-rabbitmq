@@ -1,24 +1,6 @@
 from __future__ import absolute_import, unicode_literals
 
-# ^^^ The above is required if you want to import from the celery
-# library.  If you don't have this then `from celery.schedules import`
-# becomes `proj.celery.schedules` in Python 2.x since it allows
-# for relative imports by default.
-
-# Celery settings
-
 import os
-
-CELERY_BROKER_URL = 'amqp://admin:mypass@rabbitmq:5672/'
-
-#: Only add pickle to this list if your broker is secured
-#: from unwanted access (see userguide/security.html)
-CELERY_ACCEPT_CONTENT = ['json']
-# CELERY_RESULT_BACKEND = 'db+sqlite:///results.sqlite'
-CELERY_RESULT_BACKEND = 'django-db'
-CELERY_CACHE_BACKEND = 'django-cache'
-CELERY_TASK_SERIALIZER = 'json'
-
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -138,3 +120,14 @@ STATIC_URL = '/static/'
 # RabbitMQ
 # RABBITMQ_USER = os.environ['RABBITMQ_DEFAULT_USER']
 # RABBITMQ_PASS = os.environ['RABBITMQ_DEFAULT_PASS']
+
+
+CELERY_BROKER_URL = 'amqp://admin:mypass@rabbitmq:5672/'
+
+# #: Only add pickle to this list if your broker is secured
+# #: from unwanted access (see userguide/security.html)
+CELERY_ACCEPT_CONTENT = ['json']
+# CELERY_RESULT_BACKEND = 'db+sqlite:///results.sqlite'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'django-cache'
+CELERY_TASK_SERIALIZER = 'json'
