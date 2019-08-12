@@ -5,7 +5,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -97,7 +96,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Mexico_City'
 
 USE_I18N = True
 
@@ -113,15 +112,6 @@ STATIC_URL = '/static/'
 
 
 # Celery configuration
-# CELERY_RESULT_BACKEND = 'django-db'
-# CELERY_CACHE_BACKEND = 'django-cache'
-
-
-# RabbitMQ
-# RABBITMQ_USER = os.environ['RABBITMQ_DEFAULT_USER']
-# RABBITMQ_PASS = os.environ['RABBITMQ_DEFAULT_PASS']
-
-
 CELERY_BROKER_URL = 'amqp://admin:mypass@rabbitmq:5672/'
 
 # #: Only add pickle to this list if your broker is secured
