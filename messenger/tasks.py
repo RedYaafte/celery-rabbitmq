@@ -1,5 +1,8 @@
 from __future__ import absolute_import, unicode_literals
+from django.utils import timezone
 from celery import Celery, shared_task
+from celery.task.schedules import crontab
+from celery.decorators import periodic_task
 from tasks.celery import app
 import django
 django.setup()
@@ -22,13 +25,25 @@ def count_messages():
     from django.contrib.auth.models import User
     from .models import Message
     user = User.objects.first()
+    fake_id = Message.objects.all().count()
     message = Message.objects.create(
         type=Message.NOTICE_TYPE,
         priority=Message.NORMAL_PRIORITY,
         from_user=user,
         to_user=user,
-        title='Test 1',
-        body='Test 1'
+        title=f'Test {fake_id + 1}',
+        body=f'Test {fake_id + 1}'
     )
 
     return f"Nuevo mensage envíado con id: {message.id}"
+
+
+# @app.task
+# def send_mail_task():
+#     return('Correo enviadoooo!!')
+
+# @periodic_task(run_every=(crontab(minute='1')), name="some_task", ignore_result=False)
+# def continuous_task():
+#     now = timezone.now()
+#     print(f'La hora actual es.. {now}')
+#     return "Ok..."
