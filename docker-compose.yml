@@ -22,7 +22,9 @@ services:
       - "${SQL_DATA_OUTSIDE}:${SQL_DATA_INSIDE}"
   app:
     image: "${APP_IMAGE}"
+    # command: sh -c "apt-get update && chmod u+x wait-for"
     command: sh -c "pip install -r requirements.txt && python manage.py runserver 0:8000"
+    # command: sh -c "./wait-for rabbitmq:5672 && ./wait-for app:8000 && celery -A tasks worker --loglevel=info"
     container_name: "${APP_CONTAINER}"
     env_file:
       - .env
