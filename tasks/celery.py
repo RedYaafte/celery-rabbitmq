@@ -16,7 +16,7 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
     # Calls test('hello') every 10 seconds.
-    # sender.add_periodic_task(10.0, test.s('<---  hello'), name='add every 10s')
+    sender.add_periodic_task(10.0, test.s('<---  hello'), name='add every 10s')
 
     # Send email
     sender.add_periodic_task(
@@ -38,7 +38,8 @@ def setup_periodic_tasks(sender, **kwargs):
 
 @app.task
 def test(arg):
-    print(arg)
+    print("<----- Test ----->", arg, flush=True)
+    return print("Enjoy Docker!! ---------->", flush=True)
 
 
 @app.task
