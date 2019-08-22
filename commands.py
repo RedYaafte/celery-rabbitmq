@@ -1,3 +1,13 @@
-import os
-myCmd = "adduser celeryTaks && su celeryTaks && ./wait-for-it.sh www.google.com:80 -- echo 'google is up' "
-os.system(myCmd)
+# import os
+# myCmd = "docker exec -it dcr bash"
+# myCelery = "celery -A tasks worker --loglevel=info"
+# os.system(myCmd, myCelery)
+
+
+import subprocess
+MyOut = subprocess.Popen(['ls', '-l', '.'],
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.STDOUT)
+stdout, stderr = MyOut.communicate()
+print(stdout)
+print(stderr)

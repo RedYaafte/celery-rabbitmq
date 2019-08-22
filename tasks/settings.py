@@ -121,6 +121,7 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_CACHE_BACKEND = 'django-cache'
 CELERY_TASK_SERIALIZER = 'json'
+# worker_state_db = 'status.db'
 # CELERY_ENABLE_UTC = True
 # CELERY_TIME_ZONE = 'America/Mexico_City'
 

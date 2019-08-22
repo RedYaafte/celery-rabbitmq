@@ -60,14 +60,14 @@ services:
     depends_on:
       - sql
       - rabbitmq
-  # celery:
-  #   build: .
-  #   command: celery -A tasks worker -l info
-  #   volumes:
-  #     - .:/code
-  #   depends_on:
-  #     - sql
-  #     - rabbitmq
+  celery:
+    build: .
+    command: celery -A tasks worker -l info
+    volumes:
+      - .:/code
+    depends_on:
+      - sql
+      - rabbitmq
 networks:
   default:
     name: "${NETWORK}"

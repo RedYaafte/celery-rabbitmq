@@ -34,6 +34,7 @@ def count_messages():
         title=f'Test {fake_id + 1}',
         body=f'Test {fake_id + 1}'
     )
+    print("Se a creado un nuevo mensaje", flush=True)
 
     return f"Nuevo mensage envíado con id: {message.id}"
 
