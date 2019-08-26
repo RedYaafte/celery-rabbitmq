@@ -4,6 +4,8 @@ from celery.schedules import crontab
 from django.conf import settings
 from django.core.mail import send_mail
 import os
+import smtplib
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tasks.settings')
 
 app = Celery('proj')
@@ -16,21 +18,21 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
     # Calls test('hello') every 10 seconds.
-    sender.add_periodic_task(10.0, test.s('<---  hello'), name='add every 10s')
+    # sender.add_periodic_task(10.0, test.s('<---  hello'), name='add every 10s')
 
     # Send email
     sender.add_periodic_task(
-        crontab(hour=15, minute=6, day_of_week=3),
-        send_mail_task.s('Mail send --> :D'),
+        crontab(hour=11, minute=18, day_of_week=6),
+        send_email_smpt.s('Mail send --> :D'),
         mame='mailing'
     )
 
     # Calls test('world') every 30 seconds
-    sender.add_periodic_task(30.0, test.s('world  --->'), name='add every 30s')
+    # sender.add_periodic_task(30.0, test.s('world  --->'), name='add every 30s')
 
     # Executes every Monday morning at 7:30 a.m.
     sender.add_periodic_task(
-        crontab(hour=14, minute=49, day_of_week='wednesday'),
+        crontab(hour=15, minute=1, day_of_week='friday'),
         test.s('Happy Mondays!'),
         name='add every hour'
     )
@@ -52,6 +54,37 @@ def send_mail_task(arg):
         fail_silently=False,
     )
     return "Nice!!"
+
+
+@app.task
+def send_email_smpt(self):
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = "Hello from Mandrill, Python style!"
+    msg['From'] = "Yafté Muñoz <yafte@bedu.org>"
+    msg['To'] = "ernesto@bedu.org"
+
+    text = "Mandrill speaks plaintext"
+    part1 = MIMEText(text, 'plain')
+
+    html = "<em>Mandrill speaks <strong>HTML</strong></em>"
+    part2 = MIMEText(html, 'html')
+
+    username = settings.MANDRILL_USERNAME
+    password = settings.MANDRILL_APIKEY
+
+    msg.attach(part1)
+    msg.attach(part2)
+
+    s = smtplib.SMTP('smtp.mandrillapp.com', 587)
+
+    s.login(username, password)
+    s.sendmail(msg['From'], msg['To'], msg.as_string())
+    print(s)
+
+    s.quit()
 
 
 @app.task(bind=True)
