@@ -3,7 +3,7 @@ services:
   rabbitmq:
     container_name: rabbitmq
     hostname: rabbitmq
-    image: rabbitmq:latest
+    image: rabbitmq:3-management
     environment:
       RABBITMQ_DEFAULT_USER: "${RABBITMQ_DEFAULT_USER}"
       RABBITMQ_DEFAULT_PASS: "${RABBITMQ_DEFAULT_PASS}"
@@ -22,27 +22,7 @@ services:
       - "${SQL_DATA_OUTSIDE}:${SQL_DATA_INSIDE}"
   app:
     image: "${APP_IMAGE}"
-    # command: sh -c "chmod u+x wait-for-it.sh &&
-    #   ./wait-for-it.sh www.google.com:80 -- echo 'camaraaaasss hijo --------->'"
-    # command: sh -c "
-    #   chmod u+x wait-for-it.sh &&
-    #   pip install -r requirements.txt &&
-    #   ./wait-for-it.sh dcr:8000 -- celery -A tasks worker --loglevel=info &&
-    #   python manage.py runserver 0:8000"
-    command: bash -c "
-      chmod u+x wait-for-it.sh &&
-      pip install -r requirements.txt &&
-      python commands.py &&
-      python manage.py runserver 0:8000"
-    # command:
-    #   [
-    #     sh,
-    #     -c,
-    #     "chmod u+x wait-for-it.sh",
-    #     "./wait-for-it.sh www.google.com:80 -- echo 'camaraaaasss hijo --------->'",
-    #     "pip install -r requirements.txt",
-    #     "python manage.py runserver 0:8000",
-    #   ]
+    command: sh -c "pip install -r requirements.txt && python manage.py runserver 0:8000"
     container_name: "${APP_CONTAINER}"
     env_file:
       - .env
