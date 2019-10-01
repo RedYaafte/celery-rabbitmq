@@ -38,12 +38,6 @@ def count_messages():
     return f"Nuevo mensage envíado con id: {message.id}"
 
 
-# @app.task
-# def send_mail_task():
-#     return('Correo enviadoooo!!')
-
-# @periodic_task(run_every=(crontab(minute='1')), name="some_task", ignore_result=False)
-# def continuous_task():
-#     now = timezone.now()
-#     print(f'La hora actual es.. {now}')
-#     return "Ok..."
+@app.task
+def test_configuration(x, y):
+    print(x + y)
