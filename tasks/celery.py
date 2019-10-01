@@ -22,15 +22,11 @@ def setup_periodic_tasks(sender, **kwargs):
 
     # Send email
     sender.add_periodic_task(
-        crontab(hour=11, minute=18, day_of_week=6),
+        crontab(hour=11, minute=18),
         send_email_smpt.s('Mail send --> :D'),
         mame='mailing'
     )
 
-    # Calls test('world') every 30 seconds
-    # sender.add_periodic_task(30.0, test.s('world  --->'), name='add every 30s')
-
-    # Executes every Monday morning at 7:30 a.m.
     sender.add_periodic_task(
         crontab(hour=15, minute=1, day_of_week='friday'),
         test.s('Happy Mondays!'),
