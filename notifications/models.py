@@ -16,9 +16,13 @@ class ConfigurationNotification(models.Model):
         (LOW, 'Bajo')
     )
 
-    time = models.DateField(blanck=True, null=True)
+    type = models.CharField(max_length=200, blank=True, null=True)
+    time = models.DateField(blank=True, null=True)
     condition = models.PositiveSmallIntegerField(
         choices=CONDITION_CHOICES, default=MEDIUM)
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.type
