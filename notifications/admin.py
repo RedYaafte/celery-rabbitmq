@@ -1,3 +1,11 @@
 from django.contrib import admin
+from .models import ConfigurationNotification
 
-# Register your models here.
+
+@admin.register(ConfigurationNotification)
+class MessageAdmin(admin.ModelAdmin):
+    """
+    Model admin for ConfigurationNotification model.
+    """
+
+    pass
