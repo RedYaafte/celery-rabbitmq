@@ -43,6 +43,7 @@ class Message(models.Model):
     title = models.CharField(max_length=200)
     body = models.TextField()
     read = models.BooleanField(default=False)
+    event = models.CharField(max_length=200, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
