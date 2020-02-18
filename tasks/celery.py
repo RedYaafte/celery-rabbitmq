@@ -59,8 +59,8 @@ def send_email_smpt(self):
 
     msg = MIMEMultipart('alternative')
     msg['Subject'] = "Hello from Mandrill, Python style!"
-    msg['From'] = "Yafté Muñoz <yafte@bedu.org>"
-    msg['To'] = "ernesto@bedu.org"
+    msg['From'] = os.environ['EMAIL_HOST_USER']
+    msg['To'] = os.environ['EMAIL_RECIBE']
 
     text = "Mandrill speaks plaintext"
     part1 = MIMEText(text, 'plain')
